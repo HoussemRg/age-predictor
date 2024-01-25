@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import React,{useState} from 'react';
 import './App.css';
+import Axios from 'axios';
 
 function App() {
+  const [info,setInfo]=useState(null);
+  const [name,setName]=useState("");
+  const predictAge=()=>{
+      Axios.get(`https://api.agify.io?name=${name}`).then((res)=>{
+          setInfo(res.data);
+      });
+  }
+  
+  const putName=(event)=>{
+    setName(event.target.value);
+  }
+ 
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> Age Predictor</h1>
+      <input type="text" placeholder="Enter Your Name" onChange={putName}></input>
+      <button onClick={predictAge}>Predict</button>
+      <h1>Name :{info?.name}</h1>
+      <h1>Your Age Is :{info?.age}</h1>
     </div>
   );
 }
